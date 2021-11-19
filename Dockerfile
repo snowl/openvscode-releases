@@ -1,12 +1,21 @@
 FROM ubuntu:18.04
 
+RUN apt-get update && apt-get install -y gnupg curl
+RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    echo 'deb https://deb.nodesource.com/node_12.x bionic main' \
+        > /etc/apt/sources.list.d/nodesource.list
+
+RUN curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo 'deb https://dl.yarnpkg.com/debian/ stable main' \
+        > /etc/apt/sources.list.d/yarn.list
+
 RUN apt update && \
-    apt install -y git wget sudo && \
+    apt install -y git wget sudo openjdk-11-jdk nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/
 
-ARG RELEASE_TAG
+ARG RELEASE_TAG=openvscode-server-v1.62.1
 ARG RELEASE_ORG="gitpod-io"
 ARG OPENVSCODE_SERVER_ROOT="/home/${RELEASE_TAG}"
 
@@ -30,11 +39,11 @@ RUN if [ -z "${RELEASE_TAG}" ]; then \
 
 ARG USERNAME=openvscode-server
 ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG USER_GID=998
 
 # Creating the user and usergroup
 RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USERNAME -m $USERNAME \
+    && useradd --shell /bin/bash --uid $USER_UID --gid $USERNAME -m $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
@@ -57,4 +66,4 @@ ENV LANG=C.UTF-8 \
 
 EXPOSE 3000
 
-ENTRYPOINT [ "/bin/sh", "-c", "exec ${OPENVSCODE_SERVER_ROOT}/server.sh --port 3000 \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/bash", "-c", "exec ${OPENVSCODE_SERVER_ROOT}/server.sh --connectionToken ${CONNECTION_TOKEN} --port 3000 \"${@}\"", "--" ]
