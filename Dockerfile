@@ -15,10 +15,6 @@ RUN apt update && \
     apt install -y git wget sudo openjdk-11-jdk nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
 
-# Install .NET Core and ASP.NET Runtime.
-RUN wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
-RUN bash /tmp/dotnet-install.sh -c Current --runtime aspnetcore
-
 WORKDIR /home/
 
 ARG RELEASE_TAG=openvscode-server-v1.62.3
@@ -59,6 +55,11 @@ RUN chmod g+rw /home && \
     chown -R $USERNAME:$USERNAME ${OPENVSCODE_SERVER_ROOT};
 
 USER $USERNAME
+
+# Install .NET Core and ASP.NET Runtime.
+RUN wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+RUN bash /tmp/dotnet-install.sh -c Current --runtime aspnetcore
+RUN rm /tmp/dotnet-install.sh
 
 WORKDIR /home/workspace/
 
