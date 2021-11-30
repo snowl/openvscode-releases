@@ -9,6 +9,10 @@ RUN curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo 'deb https://dl.yarnpkg.com/debian/ stable main' \
         > /etc/apt/sources.list.d/yarn.list
 
+RUN wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
+RUN dpkg -i /tmp/packages-microsoft-prod.deb
+RUN rm /tmp/packages-microsoft-prod.deb
+
 RUN apt update && \
     apt install -y git wget sudo openjdk-11-jdk nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
