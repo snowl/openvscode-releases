@@ -56,11 +56,6 @@ RUN chmod g+rw /home && \
 
 USER $USERNAME
 
-# Install .NET Core and ASP.NET Runtime.
-RUN wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
-RUN bash /tmp/dotnet-install.sh -c Current --runtime aspnetcore
-RUN rm /tmp/dotnet-install.sh
-
 WORKDIR /home/workspace/
 
 ENV LANG=C.UTF-8 \
