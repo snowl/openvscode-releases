@@ -16,15 +16,8 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # Add the microsoft package key
-RUN wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
-RUN dpkg -i /tmp/packages-microsoft-prod.deb
-RUN rm /tmp/packages-microsoft-prod.deb
-
-# Install the .NET runtime & .NET Core ASP NET Runtime
-RUN apt update && \
-    apt install -y apt-transport-https && \
-    apt update && \
-    apt install -y dotnet-sdk-6.0 aspnetcore-runtime-6.0
+RUN wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+RUN bash /tmp/dotnet-install.sh -c Current --runtime aspnetcore
 
 WORKDIR /home/
 
