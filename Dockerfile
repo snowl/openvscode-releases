@@ -15,7 +15,7 @@ RUN apt update && \
     apt install -y git wget sudo openjdk-11-jdk nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
 
-# Add the microsoft package key
+# Install .NET Core and ASP.NET Runtime.
 RUN wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
 RUN bash /tmp/dotnet-install.sh -c Current --runtime aspnetcore
 
