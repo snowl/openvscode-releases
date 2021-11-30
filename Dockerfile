@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
 
+# Add the node & yarn signing key
 RUN apt-get update && apt-get install -y gnupg curl
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     echo 'deb https://deb.nodesource.com/node_12.x bionic main' \
@@ -9,13 +10,21 @@ RUN curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo 'deb https://dl.yarnpkg.com/debian/ stable main' \
         > /etc/apt/sources.list.d/yarn.list
 
+# Install Java, NodeJS & Yarn
 RUN apt update && \
     apt install -y git wget sudo openjdk-11-jdk nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
 
+# Add the microsoft package key
 RUN wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
 RUN dpkg -i /tmp/packages-microsoft-prod.deb
 RUN rm /tmp/packages-microsoft-prod.deb
+
+# Install the .NET runtime & .NET Core ASP NET Runtime
+RUN apt update && \
+    apt install -y apt-transport-https && \
+    apt update && \
+    apt install -y dotnet-sdk-6.0 aspnetcore-runtime-6.0
 
 WORKDIR /home/
 
