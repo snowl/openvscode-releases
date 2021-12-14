@@ -12,7 +12,7 @@ RUN curl -s https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
 
 # Install Java, NodeJS & Yarn
 RUN apt update && \
-    apt install -y git wget sudo openjdk-11-jdk nodejs yarn build-essential && \
+    apt install -y git wget sudo openjdk-11-jdk nodejs yarn build-essential vim && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/
