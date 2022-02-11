@@ -64,8 +64,9 @@ ENV LANG=C.UTF-8 \
     EDITOR=code \
     VISUAL=code \
     GIT_EDITOR="code --wait" \
-    OPENVSCODE_SERVER_ROOT=${OPENVSCODE_SERVER_ROOT}
+    OPENVSCODE_SERVER_ROOT=${OPENVSCODE_SERVER_ROOT} \
+    PATH="${OPENVSCODE_SERVER_ROOT}/bin/remote-cli:${PATH}"
 
 EXPOSE 3000
 
-ENTRYPOINT [ "/bin/bash", "-c", "exec ${OPENVSCODE_SERVER_ROOT}/server.sh --connectionToken ${CONNECTION_TOKEN} --port 3000 \"${@}\"", "--" ]
+ENTRYPOINT [ "/bin/bash", "-c", "exec ${OPENVSCODE_SERVER_ROOT}/bin/openvscode-server --host 0.0.0.0 --connectionToken ${CONNECTION_TOKEN} \"${@}\"", "--" ]
