@@ -17,7 +17,7 @@ RUN apt update && \
 
 WORKDIR /home/
 
-ARG RELEASE_TAG=openvscode-server-v1.72.1
+ARG RELEASE_TAG=openvscode-server-v1.72.2
 ARG RELEASE_ORG="gitpod-io"
 ARG OPENVSCODE_SERVER_ROOT="/home/${RELEASE_TAG}"
 
